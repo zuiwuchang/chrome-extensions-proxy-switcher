@@ -1,0 +1,11 @@
+{
+    "name": "Proxy Switcher",
+    "description": "Easily switch between used proxies",
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": "switcher.png"
+    },
+    "options_page": "options.html"
+}

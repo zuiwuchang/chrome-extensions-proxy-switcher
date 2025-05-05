@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "build": "npx webpack --config webpack.config.js --mode production",
+    "dev": "npx webpack --watch --config webpack.config.js --mode development"
+  },
+  "dependencies": {
+    "@types/alpinejs": "^3.13.11",
+    "chrome-types": "^0.1.349"
+  },
+  "devDependencies": {
+    "glob": "^11.0.2",
+    "path": "^0.12.7",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
+  }
+}
