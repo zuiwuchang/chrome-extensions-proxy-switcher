@@ -1,5 +1,14 @@
 
 import { Alpine } from 'alpinejs'
+interface I18n {
+    /**
+   * 返回 name 翻譯後的文本
+   * @param {string} name
+   * @param  { {[name: string]: string} } vars
+   * @returns
+   */
+    get(name: string, vars?: Record<string, any>): string | Record<string, any> | null
+}
 export interface ThemeState {
     theme: null | string
     dark: boolean
@@ -104,7 +113,7 @@ export class Theme {
     }
 }
 
-export function initTHeme(alpinejs: Alpine) {
+export function initTHeme(alpinejs: Alpine, i18n: I18n) {
     const theme = new Theme(alpinejs)
     alpinejs.magic('theme', () => theme)
     alpinejs.data('theme', () => {
@@ -148,6 +157,52 @@ export function initTHeme(alpinejs: Alpine) {
             clickOutside() {
                 this.active = false
             },
+            getAuto() {
+                return i18n.get('Auto')
+            },
         }
+    })
+    alpinejs.directive('nav-theme', el => {
+        el.classList.add(
+            'nav-item',
+        )
+        el.setAttribute('x-on:click.outside', "clickOutside")
+        el.innerHTML = `<button class="button" :class="iconColor" @click="click">
+<span class="icon">
+    <i :class="icon"></i>
+</span>
+</button>
+<div class="dropdown is-right" :class="isActive">
+<div class="dropdown-menu" id="dropdown-menu" role="menu">
+    <div class="dropdown-content">
+    <a class="dropdown-item" :class="isLight" @click="setLight">
+        <span class="icon-text">
+        <span class="icon">
+            <i class="fa-solid fa-sun"></i>
+        </span>
+        <span>Light</span>
+        </span>
+    </a>
+    <a class="dropdown-item" :class="isDark" @click="setDark">
+        <span class="icon-text">
+        <span class="icon">
+            <i class="fa-solid fa-moon"></i>
+        </span>
+        <span>Dark</span>
+        </span>
+    </a>
+    <hr class="dropdown-divider" />
+    <a class="dropdown-item" :class="isAuto" @click="setAuto">
+        <span class="icon-text">
+        <span class="icon">
+            <i :class="auto"></i>
+        </span>
+        <span x-text="getAuto"></span>
+        </span>
+    </a>
+    </div>
+</div>
+</div>`
+
     })
 }

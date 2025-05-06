@@ -19,12 +19,7 @@ module.exports = {
         filename: '[name].js',
     },
     module: {
-
         rules: [
-            {
-                test: /\.json$/,
-                loader: 'json-loader'
-            },
             {
                 test: /\.ts$/,
                 use: 'ts-loader',

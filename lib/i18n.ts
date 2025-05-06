@@ -1,8 +1,8 @@
 import { Alpine } from 'alpinejs'
 import { Completer } from './completer'
-import zhHnat from '../i18n/zh_hant.json'
-import zhHnas from '../i18n/zh_hans.json'
-import enUS from '../i18n/en_us.json'
+import { zhHant } from '../i18n/zh_hant'
+import { zhHans } from '../i18n/zh_hans'
+import { enUS } from '../i18n/en_us'
 export interface I18nState {
     locale: null | Language
     assets: null | Record<string, any>
@@ -152,7 +152,6 @@ export class I18n {
         if (o === null || o === undefined) {
             return name
         }
-
         // found message
         for (const k of name.split('.')) {
             o = o[k]
@@ -244,7 +243,7 @@ export function initI18n(alpinejs: Alpine) {
                 match(locale: string) {
                     return locale == 'zh' || locale.startsWith('zh-')
                 },
-                assets: zhHnat,
+                assets: zhHant,
             },
             {
                 id: 'zh_hans',
@@ -253,7 +252,7 @@ export function initI18n(alpinejs: Alpine) {
                 match(locale: string) {
                     return locale.startsWith('zh-') && (locale.indexOf('cn') != -1 || locale.indexOf('hans') != -1)
                 },
-                assets: zhHnas,
+                assets: zhHans,
             },
             {
                 id: 'en',
@@ -266,4 +265,95 @@ export function initI18n(alpinejs: Alpine) {
                 assets: enUS,
             },
         ])
+    // alpinejs.magic('_', () => ((name: string, vars?: Record<string, any>) => {
+    //     return i18n.get(name, vars)
+    // }))
+    alpinejs.data('i18n', () => {
+        return {
+
+            active: false,
+            isActive() {
+                return this.active ? 'is-active' : ''
+            },
+            click() {
+                this.active = !this.active
+            },
+            clickOutside() {
+                this.active = false
+            },
+
+            isAuto() {
+                return i18n.is(null) ? 'is-active' : ''
+            },
+            setAuto() {
+                i18n.setLocale(null)
+            },
+            isEn() {
+                return i18n.is('en') ? 'is-active' : ''
+            },
+            setEn() {
+                i18n.setLocale('en')
+            },
+            isZhHant() {
+                return i18n.is('zh_hant') ? 'is-active' : ''
+            },
+            setZhHant() {
+                i18n.setLocale('zh_hant')
+            },
+            isZhHans() {
+                return i18n.is('zh_hans') ? 'is-active' : ''
+            },
+            setZhHans() {
+                i18n.setLocale('zh_hans')
+            },
+
+            getAuto() {
+                let tag: string
+                switch (i18n.getDisplay().id) {
+                    case 'zh_hant':
+                        tag = '🇹🇼 '
+                        break
+                    case 'zh_hans':
+                        tag = '🇨🇳 '
+                        break
+                    default:
+                        tag = '🇺🇸 '
+                        break
+                }
+                return tag + i18n.get('Auto')
+            },
+        }
+    })
+    alpinejs.directive('nav-i18n', el => {
+        el.classList.add(
+            'nav-item',
+        )
+        el.setAttribute('x-on:click.outside', "clickOutside")
+        el.innerHTML = ` <button class="button" :class="$theme.iconColor" @click="click">
+<span class="icon">
+    <i class="fa-solid fa-language"></i>
+</span>
+</button>
+
+<div class="dropdown is-right" :class="isActive">
+<div class="dropdown-menu" id="dropdown-menu" role="menu">
+    <div class="dropdown-content">
+    <a class="dropdown-item" :class="isEn" @click="setEn">
+        <span>🇺🇸 English</span>
+    </a>
+    <a class="dropdown-item" :class="isZhHans" @click="setZhHans">
+        <span>🇨🇳 简体中文</span>
+    </a>
+    <a class="dropdown-item" :class="isZhHant" @click="setZhHant">
+        <span>🇹🇼 繁體中文</span>
+    </a>
+    <hr class="dropdown-divider" />
+    <a class="dropdown-item" :class="isAuto" @click="setAuto">
+        <span x-text="getAuto"></span>
+    </a>
+    </div>
+</div>
+</div>`
+    })
+    return i18n
 }
