@@ -9,6 +9,11 @@ document.addEventListener('alpine:init', () => {
 
     Alpine.data('list', () => ({
         open: false,
+        items: [
+            { id: 'a', name: 'A' },
+            { id: 'b', name: 'B' },
+            { id: 'c', name: 'C' },
+        ],
         message: 'this is a message',
         toggle() {
             this.open = !this.open

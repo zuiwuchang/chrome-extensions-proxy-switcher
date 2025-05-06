@@ -203,6 +203,6 @@ export function initTHeme(alpinejs: Alpine, i18n: I18n) {
     </div>
 </div>
 </div>`
-
     })
+    return theme
 }

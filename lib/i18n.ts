@@ -32,18 +32,13 @@ export class I18n {
             locale: null,
             assets: null,
         })
-        this._init(items)
+        this.locales_ = this._init(items)
     }
     private state_: I18nState
-    private locales_ = new Completer<Array<Locale>>()
+    private locales_: Array<Locale>
     private matchd_?: Array<Language>
     private default_?: Language
-    private initialized_ = false
     private _init(items: Array<Language>) {
-        if (this.initialized_) {
-            console.warn('alpinejs-i18n repeat initialization')
-            return
-        }
         const locales: Array<Locale> = []
         const matchd: Array<Language> = []
         const language = localStorage.getItem("language")
@@ -71,16 +66,15 @@ export class I18n {
             this.state_.locale = locale
         }
         this.matchd_ = matchd
-        this.initialized_ = true
 
         this._load(locale ?? this.getDisplay())
-        this.locales_.resolve(locales)
+        return locales
     }
     /**
      * @returns 返回所有支持的語言列表
      */
     getLocaleList() {
-        return this.locales_.promise
+        return this.locales_
     }
     /**
      * @returns {string}  返回當前設置的語言 id
@@ -106,9 +100,6 @@ export class I18n {
      * 設置當前語言
      */
     setLocale(id: string | null | undefined) {
-        if (!this.initialized_) {
-            throw new Error('alpinejs-i18n not initialized')
-        }
 
         const state = this.state_
         if (id === null || id === undefined) {
@@ -182,15 +173,25 @@ export class I18n {
      * 返回當前應該顯示的語言環境
      */
     getDisplay(): Language {
-        if (!this.initialized_) {
-            throw new Error('alpinejs-i18n not initialized')
-        }
-
         const locale = this.state_.locale
         if (locale) {
             return locale
         }
 
+        for (let lang of navigator.languages) {
+            lang = lang.toLowerCase()
+            for (const m of this.matchd_!) {
+                if (m.match(lang)) {
+                    return m
+                }
+            }
+        }
+        return this.default_!
+    }
+    /**
+     * 返回系統應該顯示的語言
+     */
+    getAuto() {
         for (let lang of navigator.languages) {
             lang = lang.toLowerCase()
             for (const m of this.matchd_!) {
@@ -270,6 +271,18 @@ export function initI18n(alpinejs: Alpine) {
     // }))
     alpinejs.data('i18n', () => {
         return {
+            locales: i18n.getLocaleList().map((v) => {
+                return {
+                    id: v.id,
+                    name: v.name,
+                    set() {
+                        i18n.setLocale(v.id)
+                    },
+                    active() {
+                        return i18n.is(v.id) ? 'is-active' : ''
+                    },
+                }
+            }),
 
             active: false,
             isActive() {
@@ -288,28 +301,10 @@ export function initI18n(alpinejs: Alpine) {
             setAuto() {
                 i18n.setLocale(null)
             },
-            isEn() {
-                return i18n.is('en') ? 'is-active' : ''
-            },
-            setEn() {
-                i18n.setLocale('en')
-            },
-            isZhHant() {
-                return i18n.is('zh_hant') ? 'is-active' : ''
-            },
-            setZhHant() {
-                i18n.setLocale('zh_hant')
-            },
-            isZhHans() {
-                return i18n.is('zh_hans') ? 'is-active' : ''
-            },
-            setZhHans() {
-                i18n.setLocale('zh_hans')
-            },
 
             getAuto() {
                 let tag: string
-                switch (i18n.getDisplay().id) {
+                switch (i18n.getAuto().id) {
                     case 'zh_hant':
                         tag = '🇹🇼 '
                         break
@@ -338,15 +333,11 @@ export function initI18n(alpinejs: Alpine) {
 <div class="dropdown is-right" :class="isActive">
 <div class="dropdown-menu" id="dropdown-menu" role="menu">
     <div class="dropdown-content">
-    <a class="dropdown-item" :class="isEn" @click="setEn">
-        <span>🇺🇸 English</span>
-    </a>
-    <a class="dropdown-item" :class="isZhHans" @click="setZhHans">
-        <span>🇨🇳 简体中文</span>
-    </a>
-    <a class="dropdown-item" :class="isZhHant" @click="setZhHant">
-        <span>🇹🇼 繁體中文</span>
-    </a>
+    <template x-for="locale in locales" :key="locale.id">
+        <a class="dropdown-item" :class="locale.active" @click="locale.set">
+            <span x-text="locale.name"></span>
+        </a>
+    </template>
     <hr class="dropdown-divider" />
     <a class="dropdown-item" :class="isAuto" @click="setAuto">
         <span x-text="getAuto"></span>
