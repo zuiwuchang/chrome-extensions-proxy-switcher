@@ -323,8 +323,7 @@ export function initI18n(alpinejs: Alpine) {
         el.classList.add(
             'nav-item',
         )
-        el.setAttribute('x-on:click.outside', "clickOutside")
-        el.innerHTML = ` <button class="button" :class="$theme.iconColor" @click="click">
+        el.innerHTML = ` <button class="button" :class="$theme.iconColor" @click="click" @click.outside="clickOutside">
 <span class="icon">
     <i class="fa-solid fa-language"></i>
 </span>

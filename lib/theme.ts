@@ -166,8 +166,7 @@ export function initTHeme(alpinejs: Alpine, i18n: I18n) {
         el.classList.add(
             'nav-item',
         )
-        el.setAttribute('x-on:click.outside', "clickOutside")
-        el.innerHTML = `<button class="button" :class="iconColor" @click="click">
+        el.innerHTML = `<button class="button" :class="iconColor" @click="click" @click.outside="clickOutside">
 <span class="icon">
     <i :class="icon"></i>
 </span>

@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/bluma-1.0.2.css">
   <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
@@ -25,6 +26,30 @@
       -ms-user-select: none;
       user-select: none;
     }
+
+    .main {
+      padding: 0.25rem 0.5rem;
+    }
+
+    .hr {
+      background-color: var(--bulma-border-weak);
+      border: none;
+      display: block;
+      height: 1px;
+      margin: .5rem 0;
+    }
+
+    hr,
+    li {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .main {
+      padding-bottom: 0.5rem;
+    }
   </style>
 </head>
 
@@ -38,44 +63,35 @@
     <div x-nav-theme></div>
     <div x-nav-i18n x-data="i18n"></div>
 
-    <div class="nav-item" x-data="list">
-      <button class="button" :class="$theme.iconColor" @click="openOptions">
-        <span class="icon">
-          <i class="fa-solid fa-gear"></i>
-        </span>
-      </button>
-    </div>
   </nav>
 
+  <div class="main">
+    <aside class="menu" x-data="list">
+      <ul class="menu-list">
+        <hr class="hr">
+        <li><a x-text="tDirect" @click="clickDirect"></a></li>
+        <hr class="hr">
+        <li><a x-text="tSystem" @click="clickSystem"></a></li>
+        <hr class="hr">
+      </ul>
 
-  <ol x-data="list">
-    <li>中文</li>
-    <template x-for="product in items" :key="product.id">
-      <li x-text="product.name"></li>
-    </template>
-    <li>3</li>
-    <li>4</li>
-    <li>5</li>
-    <li>127.0.0.1</li>
-    <li>127.0.0.1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
-    <li>5</li>
-    <li>127.0.0.1</li>
-    <li>127.0.0.1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
-    <li>5</li>
-    <li>127.0.0.1</li>
-    <li>127.0.0.1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
-    <li>5</li>
-    <li>127.0.0.1</li>
-  </ol>
+      <ul class="menu-list">
+        <template x-for="product in items" :key="product.id">
+          <li> <a x-text="product.name"></a></li>
+        </template>
+        <hr class="hr">
+      </ul>
+
+      <ul class="menu-list">
+        <li><a class="icon-text" @click="clickSettings">
+            <span class="icon">
+              <i class="fa-solid fa-gear"></i>
+            </span>
+            <span x-text="tSettings"></span>
+          </a></li>
+      </ul>
+    </aside>
+  </div>
 </body>
 
 </html>

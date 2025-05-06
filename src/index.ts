@@ -8,19 +8,31 @@ document.addEventListener('alpine:init', () => {
     initTHeme(Alpine, i18n)
 
     Alpine.data('list', () => ({
-        open: false,
         items: [
             { id: 'a', name: 'A' },
             { id: 'b', name: 'B' },
             { id: 'c', name: 'C' },
         ],
-        message: 'this is a message',
-        toggle() {
-            this.open = !this.open
+        clickSystem() {
+            console.log("System")
+            window.close()
         },
-        openOptions() {
-            console.log('openOptions', chrome.runtime.openOptionsPage)
+        clickDirect() {
+            console.log("Direct")
+            window.close()
+        },
+        clickSettings() {
             chrome.runtime.openOptionsPage()
+            window.close()
+        },
+        tSystem() {
+            return i18n.get("System")
+        },
+        tDirect() {
+            return i18n.get("Direct")
+        },
+        tSettings() {
+            return i18n.get("Settings")
         },
     }))
 })
