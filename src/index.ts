@@ -13,6 +13,13 @@ document.addEventListener('alpine:init', () => {
             { id: 'b', name: 'B' },
             { id: 'c', name: 'C' },
         ],
+        active: '_d',
+        isDirect() {
+            return this.active === '_d' ? 'is-active' : ''
+        },
+        isSystem() {
+            return this.active === '_s' ? 'is-active' : ''
+        },
         clickSystem() {
             console.log("System")
             window.close()
@@ -34,5 +41,6 @@ document.addEventListener('alpine:init', () => {
         tSettings() {
             return i18n.get("Settings")
         },
+
     }))
 })

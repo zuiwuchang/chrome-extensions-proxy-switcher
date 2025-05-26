@@ -69,15 +69,30 @@
     <aside class="menu" x-data="list">
       <ul class="menu-list">
         <hr class="hr">
-        <li><a x-text="tDirect" @click="clickDirect"></a></li>
+        <li><a class="icon-text" :class="isDirect" @click="clickDirect">
+            <span class="icon">
+              <i class="fa-solid fa-repeat"></i>
+            </span>
+            <span x-text="tDirect"></span>
+          </a></li>
         <hr class="hr">
-        <li><a x-text="tSystem" @click="clickSystem"></a></li>
+        <li><a class="icon-text" :class="isSystem" @click="clickSystem">
+            <span class="icon">
+              <i class="fa-solid fa-power-off"></i>
+            </span>
+            <span x-text="tSystem"></span>
+          </a></li>
         <hr class="hr">
       </ul>
 
       <ul class="menu-list">
         <template x-for="product in items" :key="product.id">
-          <li> <a x-text="product.name"></a></li>
+          <li><a class="icon-text">
+              <span class="icon">
+                <i class="fa-solid fa-globe"></i>
+              </span>
+              <span x-text="product.name"></span>
+            </a></li>
         </template>
         <hr class="hr">
       </ul>

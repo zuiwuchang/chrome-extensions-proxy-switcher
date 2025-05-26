@@ -3,11 +3,21 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bluma-1.0.2.css">
+    <script defer src="dist/options.js"></script>
     <script defer src="js/alpinejs-csp-3.14.9.js"></script>
 </head>
 
 <body>
-    ok
+    <nav class="nav" x-data="theme">
+        <div class="nav-item" :class="$theme.color">
+            Proxy Switcher
+        </div>
+        <div class="nav-item" style="flex-grow: 1;"></div>
+
+        <div x-nav-theme></div>
+        <div x-nav-i18n x-data="i18n"></div>
+
+    </nav>
 </body>
 
 </html>
