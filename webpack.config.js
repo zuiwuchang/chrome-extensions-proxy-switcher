@@ -5,9 +5,9 @@ const path = require('path');
 function getEntryPoints(src = 'src') {
     const entries = {}
     glob.sync(`${src}/**/*.ts`).map((filepath) => {
-        console.log(filepath)
         const name = path.relative(src, filepath).replace(/\.ts$/, '')
-        entries[name] = `./${filepath}`
+        // entries[name] = `./${filepath}`
+        entries[name] = `${filepath}`
     })
     return entries
 }

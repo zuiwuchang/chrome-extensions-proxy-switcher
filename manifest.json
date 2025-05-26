@@ -1,6 +1,6 @@
 {
     "name": "Proxy Switcher",
-    "description": "Easily switch between used proxies",
+    "description": "Easily switch between used proxies! https://github.com/zuiwuchang/chrome-extensions-proxy-switcher",
     "version": "1.0",
     "manifest_version": 3,
     "action": {

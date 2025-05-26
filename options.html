@@ -1,19 +1,67 @@
 <html>
 
 <head>
+    <title>Proxy Switcher Settings</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bluma-1.0.2.css">
+    <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
     <script defer src="dist/options.js"></script>
     <script defer src="js/alpinejs-csp-3.14.9.js"></script>
+    <style>
+        .nav {
+            display: flex;
+            padding: 0.25rem;
+            align-content: center;
+        }
+
+        .nav-item {
+            display: flex;
+            align-content: center;
+            align-items: center;
+        }
+
+        .dropdown-item {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .main {
+            padding: 0.25rem 0.5rem;
+        }
+
+        .hr {
+            background-color: var(--bulma-border-weak);
+            border: none;
+            display: block;
+            height: 1px;
+            margin: .5rem 0;
+        }
+
+        hr,
+        li {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .main {
+            padding-bottom: 0.5rem;
+        }
+    </style>
 </head>
 
 <body>
     <nav class="nav" x-data="theme">
         <div class="nav-item" :class="$theme.color">
-            Proxy Switcher
+            Proxy Switcher Options
         </div>
         <div class="nav-item" style="flex-grow: 1;"></div>
 
+        <div x-nav-opensource x-data="opensource"></div>
         <div x-nav-theme></div>
         <div x-nav-i18n x-data="i18n"></div>
 
