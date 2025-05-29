@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Proxy Switcher Settings</title>
+    <title x-data="title" x-text="getTitle"></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bluma-1.0.2.css">
@@ -9,63 +9,78 @@
     <script defer src="dist/options.js"></script>
     <script defer src="js/alpinejs-csp-3.14.9.js"></script>
     <style>
-        .nav {
+        .tabview {
+            display: none;
+        }
+
+        .tabview.is-active {
             display: flex;
-            padding: 0.25rem;
-            align-content: center;
         }
 
-        .nav-item {
+        .flex {
             display: flex;
-            align-content: center;
-            align-items: center;
         }
 
-        .dropdown-item {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+        .flex-row {
+            flex-direction: row;
         }
 
-        .main {
-            padding: 0.25rem 0.5rem;
+        .flex-grow-1 {
+            flex-grow: 1
         }
 
-        .hr {
-            background-color: var(--bulma-border-weak);
-            border: none;
-            display: block;
-            height: 1px;
-            margin: .5rem 0;
-        }
-
-        hr,
-        li {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .main {
-            padding-bottom: 0.5rem;
+        .gap-3 {
+            gap: 0.75rem;
         }
     </style>
 </head>
 
 <body>
-    <nav class="nav" x-data="theme">
-        <div class="nav-item" :class="$theme.color">
-            Proxy Switcher Options
+
+    <div class="section flex flex-row gap-3" x-data="app">
+        <aside class="menu">
+            <p class="menu-label" x-text="getGeneral"></p>
+            <ul class="menu-list">
+                <template x-for="item in data.general" :key="item.id">
+                    <li><a :class="item.active" @click="item.click">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i :class="item.icon"></i>
+                                </span>
+                                <span x-text="item.text"></span>
+                            </span>
+                        </a></li>
+                </template>
+            </ul>
+            <p class="menu-label" x-text="getProfile"></p>
+            <ul class="menu-list">
+                <li><a>Team Settings</a></li>
+                <li>
+                    <a>Manage Your Team</a>
+                    <ul>
+                        <li><a>Members</a></li>
+                        <li><a>Plugins</a></li>
+                        <li><a>Add a member</a></li>
+                    </ul>
+                </li>
+                <li><a>Invitations</a></li>
+                <li><a>Cloud Storage Environment Settings</a></li>
+                <li><a>Authentication</a></li>
+            </ul>
+        </aside>
+        <div class="flex-grow-1">
+            <div class="tabview" :class="isVersion">
+                isVersion
+            </div>
+            <div class="tabview" :class="isSync">
+                isSync
+            </div>
+            <div class="tabview" :class="isProxy">
+                isProxy
+            </div>
         </div>
-        <div class="nav-item" style="flex-grow: 1;"></div>
+    </div>
 
-        <div x-nav-opensource x-data="opensource"></div>
-        <div x-nav-theme></div>
-        <div x-nav-i18n x-data="i18n"></div>
-
-    </nav>
 </body>
 
 </html>
