@@ -41,8 +41,8 @@ export class I18n {
     private _init(items: Array<Language>) {
         const locales: Array<Locale> = []
         const matchd: Array<Language> = []
-        const language = localStorage.getItem("language")
-        let locale: Language | null = null
+        // const language = localStorage.getItem("language")
+        // let locale: Language | null = null
         for (const item of items) {
             locales.push({
                 id: item.id,
@@ -52,9 +52,9 @@ export class I18n {
                 this.default_ = item
             }
             matchd.push(item)
-            if (item.id == language) {
-                locale = item
-            }
+            // if (item.id == language) {
+            //     locale = item
+            // }
         }
         if (!this.default_) {
             throw new Error("not define defualt lang")
@@ -62,12 +62,27 @@ export class I18n {
         matchd.sort((a, b) => b.sort - a.sort)
 
 
-        if (locale) {
-            this.state_.locale = locale
-        }
+        // if (locale) {
+        //     this.state_.locale = locale
+        // }
         this.matchd_ = matchd
 
-        this._load(locale ?? this.getDisplay())
+        // this._load(locale ?? this.getDisplay())
+        this._load(this.getDisplay())
+
+        let expired = false
+        chrome.storage.local.get('language').then((keys) => {
+            if (!expired) {
+                this.setLocale(keys.language, false)
+            }
+        })
+        chrome.storage.local.onChanged.addListener((keys) => {
+            expired = true
+            const language = keys.language
+            if (language) {
+                this.setLocale(language.newValue, false)
+            }
+        })
         return locales
     }
     /**
@@ -99,13 +114,16 @@ export class I18n {
     /**
      * 設置當前語言
      */
-    setLocale(id: string | null | undefined) {
+    setLocale(id: string | null | undefined, post = true) {
 
         const state = this.state_
         if (id === null || id === undefined) {
             if (state.locale) {
                 state.locale = null
-                localStorage.removeItem("language")
+                // localStorage.removeItem("language")
+                if (post) {
+                    chrome.storage.local.set({ 'language': 'Auto' })
+                }
                 this._load(this.getDisplay())
             }
             return
@@ -119,7 +137,10 @@ export class I18n {
             if (m.id === id) {
                 if (state.locale != m) {
                     state.locale = m
-                    localStorage.setItem("language", m.id)
+                    // localStorage.setItem("language", m.id)
+                    if (post) {
+                        chrome.storage.local.set({ 'language': m.id })
+                    }
                     this._load(m)
                 }
                 return
@@ -127,7 +148,10 @@ export class I18n {
         }
         if (state.locale) {
             state.locale = null
-            localStorage.removeItem("language")
+            // localStorage.removeItem("language")
+            if (post) {
+                chrome.storage.local.set({ 'language': 'Auto' })
+            }
             this._load(this.getDisplay())
         }
     }

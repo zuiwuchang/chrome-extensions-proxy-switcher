@@ -38,32 +38,55 @@ export class Theme {
 
         this.state_ = state
         this.setTheme(localStorage.getItem("theme"))
+
+        let expired = false
+        chrome.storage.local.get('theme').then((keys) => {
+            if (!expired) {
+                this.setTheme(keys.theme, false)
+            }
+        })
+        chrome.storage.local.onChanged.addListener((keys) => {
+            expired = true
+            const theme = keys.theme
+            if (theme) {
+                this.setTheme(theme.newValue, false)
+            }
+        })
     }
     /**
      * 設置主題
      */
-    setTheme(name: string | null) {
+    setTheme(name: string | null, storage = true) {
         const state = this.state_
         switch (name) {
             case "Dark":
                 if (state.theme != name) {
                     state.theme = name
                     this.html_.setAttribute('data-theme', 'dark')
-                    localStorage.setItem("theme", name)
+                    // localStorage.setItem("theme", name)
+                    if (storage) {
+                        chrome.storage.local.set({ 'theme': name })
+                    }
                 }
                 break
             case "Light":
                 if (state.theme != name) {
                     state.theme = name
                     this.html_.setAttribute('data-theme', 'light')
-                    localStorage.setItem("theme", name)
+                    // localStorage.setItem("theme", name)
+                    if (storage) {
+                        chrome.storage.local.set({ 'theme': name })
+                    }
                 }
                 break
             default:
                 if (state.theme) {
                     state.theme = null
                     this.html_.removeAttribute('data-theme')
-                    localStorage.removeItem("theme")
+                    // localStorage.removeItem("theme")
+                    if (storage) {
+                        chrome.storage.local.set({ 'theme': 'Auto' })
+                    }
                 }
                 break
         }

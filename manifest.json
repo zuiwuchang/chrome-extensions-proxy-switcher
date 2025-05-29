@@ -9,6 +9,7 @@
     },
     "options_page": "options.html",
     "permissions": [
+        "storage",
         "proxy"
     ],
     "background": {
