@@ -1,5 +1,6 @@
 
 import { Alpine } from 'alpinejs'
+
 interface I18n {
     /**
    * 返回 name 翻譯後的文本
@@ -37,17 +38,17 @@ export class Theme {
         })
 
         this.state_ = state
-        this.setTheme(localStorage.getItem("theme"))
+        // this.setTheme(localStorage.getItem("theme"))
 
         let expired = false
-        chrome.storage.local.get('theme').then((keys) => {
+        chrome.storage.local.get('::theme').then((keys) => {
             if (!expired) {
                 this.setTheme(keys.theme, false)
             }
         })
         chrome.storage.local.onChanged.addListener((keys) => {
             expired = true
-            const theme = keys.theme
+            const theme = keys['::theme']
             if (theme) {
                 this.setTheme(theme.newValue, false)
             }
@@ -65,7 +66,7 @@ export class Theme {
                     this.html_.setAttribute('data-theme', 'dark')
                     // localStorage.setItem("theme", name)
                     if (storage) {
-                        chrome.storage.local.set({ 'theme': name })
+                        chrome.storage.local.set({ '::theme': name })
                     }
                 }
                 break
@@ -75,7 +76,7 @@ export class Theme {
                     this.html_.setAttribute('data-theme', 'light')
                     // localStorage.setItem("theme", name)
                     if (storage) {
-                        chrome.storage.local.set({ 'theme': name })
+                        chrome.storage.local.set({ '::theme': name })
                     }
                 }
                 break
@@ -85,7 +86,7 @@ export class Theme {
                     this.html_.removeAttribute('data-theme')
                     // localStorage.removeItem("theme")
                     if (storage) {
-                        chrome.storage.local.set({ 'theme': 'Auto' })
+                        chrome.storage.local.set({ '::theme': 'Auto' })
                     }
                 }
                 break

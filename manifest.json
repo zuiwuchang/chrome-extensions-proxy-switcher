@@ -7,6 +7,7 @@
         "default_popup": "index.html",
         "default_icon": "switcher.png"
     },
+    "incognito": "spanning",
     "options_page": "options.html",
     "permissions": [
         "storage",

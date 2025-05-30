@@ -76,12 +76,17 @@
             </span>
             <span x-text="tDirect"></span>
           </a></li>
-        <hr class="hr">
         <li><a class="icon-text" :class="isSystem" @click="clickSystem">
             <span class="icon">
               <i class="fa-solid fa-power-off"></i>
             </span>
             <span x-text="tSystem"></span>
+          </a></li>
+        <li><a class="icon-text" :class="isAuto" @click="clickAuto">
+            <span class="icon">
+              <i class="fa-solid fa-at"></i>
+            </span>
+            <span x-text="tAuto"></span>
           </a></li>
         <hr class="hr">
       </ul>

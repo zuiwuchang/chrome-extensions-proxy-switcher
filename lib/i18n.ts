@@ -71,14 +71,14 @@ export class I18n {
         this._load(this.getDisplay())
 
         let expired = false
-        chrome.storage.local.get('language').then((keys) => {
+        chrome.storage.local.get('::language').then((keys) => {
             if (!expired) {
                 this.setLocale(keys.language, false)
             }
         })
         chrome.storage.local.onChanged.addListener((keys) => {
             expired = true
-            const language = keys.language
+            const language = keys['::language']
             if (language) {
                 this.setLocale(language.newValue, false)
             }
@@ -122,7 +122,7 @@ export class I18n {
                 state.locale = null
                 // localStorage.removeItem("language")
                 if (post) {
-                    chrome.storage.local.set({ 'language': 'Auto' })
+                    chrome.storage.local.set({ '::language': 'Auto' })
                 }
                 this._load(this.getDisplay())
             }
@@ -139,7 +139,7 @@ export class I18n {
                     state.locale = m
                     // localStorage.setItem("language", m.id)
                     if (post) {
-                        chrome.storage.local.set({ 'language': m.id })
+                        chrome.storage.local.set({ '::language': m.id })
                     }
                     this._load(m)
                 }
@@ -150,7 +150,7 @@ export class I18n {
             state.locale = null
             // localStorage.removeItem("language")
             if (post) {
-                chrome.storage.local.set({ 'language': 'Auto' })
+                chrome.storage.local.set({ '::language': 'Auto' })
             }
             this._load(this.getDisplay())
         }

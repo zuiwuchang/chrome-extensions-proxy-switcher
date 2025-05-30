@@ -2,6 +2,7 @@ export const zhHans = {
     "Auto": "自动",
     "System": "系统代理",
     "Direct": "直接连接",
+    "Auto Detect": "自动检测",
     "Settings": "详细设定",
     "options": {
         "title": "代理设置",

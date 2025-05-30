@@ -11,10 +11,11 @@
     <style>
         .tabview {
             display: none;
+            width: 100%;
         }
 
         .tabview.is-active {
-            display: flex;
+            display: block;
         }
 
         .flex {
@@ -32,16 +33,19 @@
         .gap-3 {
             gap: 0.75rem;
         }
+
+        li {
+            white-space: nowrap;
+        }
     </style>
 </head>
 
 <body>
-
     <div class="section flex flex-row gap-3" x-data="app">
         <aside class="menu">
-            <p class="menu-label" x-text="getGeneral"></p>
+            <p class="menu-label" x-text="tGeneral"></p>
             <ul class="menu-list">
-                <template x-for="item in data.general" :key="item.id">
+                <template x-for="item in fixed" :key="item.id">
                     <li><a :class="item.active" @click="item.click">
                             <span class="icon-text">
                                 <span class="icon">
@@ -52,7 +56,7 @@
                         </a></li>
                 </template>
             </ul>
-            <p class="menu-label" x-text="getProfile"></p>
+            <p class="menu-label" x-text="tProfile"></p>
             <ul class="menu-list">
                 <li><a>Team Settings</a></li>
                 <li>
@@ -75,8 +79,35 @@
             <div class="tabview" :class="isSync">
                 isSync
             </div>
-            <div class="tabview" :class="isProxy">
-                isProxy
+            <div class="tabview content" :class="isProxy">
+                <h2 x-text="proxy.mode"></h2>
+                <template x-if="proxy.rules">
+                    <div>
+                        <ul>
+                            <template x-for="item in proxy.servers">
+                                <li x-text="item"></li>
+                            </template>
+                        </ul>
+                        <pre style="white-space: pre-wrap;word-break: break-word;overflow-wrap: break-word;"
+                            class="block" x-text="proxy.bypassList"></pre>
+                    </div>
+                </template>
+
+                </template>
+                <template x-if="proxy.pacScript">
+                    <div>
+                        <template x-if="proxy.mandatory">
+                            <div class="block">mandatory</div>
+                        </template>
+                        <template x-if="proxy.hasURL">
+                            <div class="block" x-text="proxy.pacScript.url"></div>
+                        </template>
+                        <template x-if="proxy.hasScript">
+                            <pre style="white-space: pre-wrap;word-break: break-word;overflow-wrap: break-word;"
+                                class="block" x-text="proxy.pacScript.data"></pre>
+                        </template>
+                    </div>
+                </template>
             </div>
         </div>
     </div>

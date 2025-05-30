@@ -1,7 +1,8 @@
 export const enUS = {
     "Auto": "Auto",
-    "System": "System Proxy",
-    "Direct": "Direct Connection",
+    "System": "System",
+    "Direct": "Direct",
+    "Auto Detect": "Auto Detect",
     "Settings": "Detailed Settings",
     "options": {
         "title": "Proxy Settings",
